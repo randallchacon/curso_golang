@@ -43,6 +43,24 @@ type car struct {
 	year  int
 }
 
+type pc struct {
+	ram   int
+	disk  int
+	brand string
+}
+
+func (myPC pc) ping() {
+	fmt.Println(myPC.brand, "Pong")
+}
+
+func (myPC *pc) DuplicateRam() {
+	myPC.ram = myPC.ram * 2
+}
+
+func (myPC pc) String() string {
+	return fmt.Sprintf("Tengo %d GB RAM, %d GB Disco y es una %s", myPC.ram, myPC.disk, myPC.brand)
+}
+
 //El reto es colocar todo el código normal en funciones
 
 func main() { //go me obliga a escribir bien el codigo con buenas practicas
@@ -324,4 +342,30 @@ func main() { //go me obliga a escribir bien el codigo con buenas practicas
 	fmt.Println(myCar2)
 
 	mypackage.PrintMessage("Hola Randall")
+
+	//Structs y punteros
+	aa := 50
+	bb := &aa
+	fmt.Println(bb)  //imprime 0x140000aa160
+	fmt.Println(*bb) //imprime 50
+
+	*bb = 100
+	fmt.Println(aa)
+
+	myPC := pc{ram: 16, disk: 500, brand: "Apple"}
+	fmt.Println(myPC)
+
+	myPC.ping()
+
+	fmt.Println(myPC)
+	myPC.DuplicateRam()
+
+	fmt.Println(myPC)
+	myPC.DuplicateRam()
+
+	fmt.Println(myPC)
+
+	//Stringers
+	myPC2 := pc{ram: 32, disk: 1000, brand: "MacBook"}
+	fmt.Println(myPC2)
 }
