@@ -1,29 +1,16 @@
 package main
 
-import (
-	"fmt"
-	"sync"
-	"time"
-)
+import "fmt"
 
-func say(text string, wg *sync.WaitGroup) {
-	defer wg.Done()
-	fmt.Println(text)
+func say(text string, c chan<- string) { //indicar si los parametros son de entrada o de salida
+	c <- text //simbolo de ingreso de datos al canal
 }
 
-func main() {
-	var wg sync.WaitGroup //son complicados de mantener con el tiempo
-
+func main() { //los channels siempre son la mejor opción
+	c := make(chan string, 1)
 	fmt.Println("Hello")
-	wg.Add(1)
-	go say("World", &wg) //concurrencia
-	wg.Wait()
-	//time.Sleep(time.Second * 1) //esto no es eficiente, porque es contra producente
-	//las goroutines es muy comun que se usen como funciones anonimas
 
-	go func(text string) {
-		fmt.Println(text)
-	}("Adios")
+	go say("Bye", c)
 
-	time.Sleep(time.Second * 1)
+	fmt.Println(<-c) // simbolo de salida de datos del canal
 }
